@@ -1,6 +1,11 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
     background-color: #f0f2f5;
@@ -8,40 +13,54 @@ body {
 }
 h1 {
     text-align: center;
-    color: #1a73e8;
+    color: #5A318B;
     margin-bottom: 20px;
 }
 .container {
     background-color: #fff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
 }
 .input-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 15px;
+    margin-bottom: 30px;
 }
-.input-grid input {
-    padding: 10px;
+.input-grid input[type="number"], .input-grid input[type="text"] {
+    padding: 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 14px;
     background-color: #f9fafb;
     transition: border-color 0.2s;
+    width: 100%;
 }
 .input-grid input:focus {
-    border-color: #1a73e8;
+    border-color: #5A318B;
     outline: none;
 }
 .input-grid input::placeholder {
     color: #6b7280;
 }
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #374151;
+}
+.checkbox-label input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #5A318B;
+}
 .add-btn {
     grid-column: span 2;
     padding: 12px;
-    background-color: #1a73e8;
+    background-color: #5A318B;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -51,13 +70,14 @@ h1 {
     transition: background-color 0.2s;
 }
 .add-btn:hover {
-    background-color: #1557b0;
+    background-color: #4A2673;
 }
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #fff;
+    min-width: 800px;
 }
 th, td {
     padding: 12px;
@@ -91,11 +111,11 @@ tr:hover {
 #resultado {
     margin-top: 20px;
     padding: 15px;
-    background-color: #e6f0ff;
+    background-color: #e9e4f0;
     border-radius: 8px;
     font-size: 16px;
     text-align: center;
-    color: #1a73e8;
+    color: #5A318B;
     font-weight: 500;
     line-height: 1.5;
 }
@@ -105,5 +125,11 @@ tr:hover {
     }
     .add-btn {
         grid-column: span 1;
+    }
+    .container {
+        padding: 20px;
+    }
+    table {
+        min-width: 100%;
     }
 }

@@ -4,7 +4,7 @@ const caixas = [
     { nome: 'G', dimensoes: [66, 53, 38], volume: 66 * 53 * 38 }
 ];
 
-const fatorCubagem = 300; // kg/m³ (transporte rodoviário)
+const fatorCubagem = 333.33; // kg/m³ (transporte rodoviário)
 let itens = [];
 
 function cabeNaCaixa(itemDimensoes, caixaDimensoes) {
@@ -13,9 +13,8 @@ function cabeNaCaixa(itemDimensoes, caixaDimensoes) {
     return item[0] <= caixa[0] && item[1] <= caixa[1] && item[2] <= caixa[2];
 }
 
-function escolherMelhorCaixa(comprimento, largura, altura, quantidade) {
-    const dimensoesItem = [comprimento, largura, altura];
-    const volumeItem = comprimento * largura * altura;
+function escolherMelhorCaixa(primeiraDimensao, largura, altura, quantidade, volumeItem) {
+    const dimensoesItem = [primeiraDimensao, largura, altura];
     let melhorCaixa = null;
     let menorNumCaixas = Infinity;
     let caixasNecessarias = 0;
@@ -40,26 +39,42 @@ function escolherMelhorCaixa(comprimento, largura, altura, quantidade) {
 
 function adicionarItem() {
     const nome = document.getElementById('nome').value.trim();
-    const comprimento = parseFloat(document.getElementById('comprimento').value);
+    const circunferenciaOuComprimento = parseFloat(document.getElementById('circunferenciaOuComprimento').value);
+    const isCilindrico = document.getElementById('isCilindrico').checked;
     const largura = parseFloat(document.getElementById('largura').value);
     const altura = parseFloat(document.getElementById('altura').value);
     const quantidade = parseInt(document.getElementById('quantidade').value);
     const pesoReal = parseFloat(document.getElementById('peso').value);
 
-    if (!nome || isNaN(comprimento) || isNaN(largura) || isNaN(altura) || isNaN(quantidade) || isNaN(pesoReal)) {
+    if (!nome || isNaN(circunferenciaOuComprimento) || isNaN(largura) || isNaN(altura) || isNaN(quantidade) || isNaN(pesoReal)) {
         alert('Por favor, preencha todos os campos com valores válidos.');
         return;
     }
 
-    const comprimentoM = comprimento / 100;
-    const larguraM = largura / 100;
-    const alturaM = altura / 100;
-    const cubagemItem = comprimentoM * larguraM * alturaM * quantidade;
-    const caixaInfo = escolherMelhorCaixa(comprimento, largura, altura, quantidade);
+    let volumeItem, cubagemItem, primeiraDimensao;
 
+    if (isCilindrico) {
+        // Item cilíndrico: calcula diâmetro a partir da circunferência
+        const diametro = circunferenciaOuComprimento / Math.PI;
+        const raio = diametro / 2;
+        volumeItem = Math.PI * raio * raio * altura; // Volume em cm³
+        cubagemItem = (volumeItem * quantidade) / 1000000; // Cubagem em m³
+        primeiraDimensao = diametro;
+    } else {
+        // Item retangular: usa comprimento
+        volumeItem = circunferenciaOuComprimento * largura * altura; // Volume em cm³
+        cubagemItem = (volumeItem * quantidade) / 1000000; // Cubagem em m³
+        primeiraDimensao = circunferenciaOuComprimento;
+    }
+
+    // Escolhe a melhor caixa
+    const caixaInfo = escolherMelhorCaixa(primeiraDimensao, largura, altura, quantidade, volumeItem);
+
+    // Adiciona o item à lista
     itens.push({
         nome,
-        comprimento,
+        circunferenciaOuComprimento,
+        isCilindrico,
         largura,
         altura,
         quantidade,
@@ -72,8 +87,10 @@ function adicionarItem() {
     atualizarTabela();
     atualizarResultados();
 
+    // Limpa os inputs
     document.getElementById('nome').value = '';
-    document.getElementById('comprimento').value = '';
+    document.getElementById('circunferenciaOuComprimento').value = '';
+    document.getElementById('isCilindrico').checked = false;
     document.getElementById('largura').value = '';
     document.getElementById('altura').value = '';
     document.getElementById('quantidade').value = '1';
@@ -91,17 +108,20 @@ function atualizarTabela() {
     corpoTabela.innerHTML = '';
 
     itens.forEach((item, index) => {
+        const circunferenciaDisplay = item.isCilindrico 
+            ? `${item.circunferenciaOuComprimento.toFixed(2)} (C)` 
+            : `${item.circunferenciaOuComprimento.toFixed(2)} (L)`;
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${item.nome}</td>
-            <td>${item.comprimento.toFixed(2)}</td>
+            <td>${circunferenciaDisplay}</td>
             <td>${item.largura.toFixed(2)}</td>
             <td>${item.altura.toFixed(2)}</td>
             <td>${item.quantidade}</td>
             <td>${item.pesoReal.toFixed(2)}</td>
             <td>${item.caixa}</td>
             <td>${item.caixasNecessarias}</td>
-            <td>${item.cubagem.toFixed(2)}</td>
+            <td>${item.cubagem.toFixed(4)}</td>
             <td><button class="remove-btn" onclick="removerItem(${index})">Remover</button></td>
         `;
         corpoTabela.appendChild(row);
@@ -120,7 +140,7 @@ function atualizarResultados() {
     });
 
     document.getElementById('resultado').innerHTML = 
-        `Cubagem Total: ${cubagemTotal.toFixed(2)} m³ | ` +
+        `Cubagem Total: ${cubagemTotal.toFixed(4)} m³ | ` +
         `Peso Cubado: ${pesoCubadoTotal.toFixed(2)} kg | ` +
         `Peso Real: ${pesoRealTotal.toFixed(2)} kg<br>` +
         `Caixas Sugeridas: PP: ${contagemCaixas.PP}, M: ${contagemCaixas.M}, G: ${contagemCaixas.G}`;
