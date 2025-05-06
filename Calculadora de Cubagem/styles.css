@@ -1,0 +1,109 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f2f5;
+    color: #333;
+}
+h1 {
+    text-align: center;
+    color: #1a73e8;
+    margin-bottom: 20px;
+}
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.input-grid input {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #f9fafb;
+    transition: border-color 0.2s;
+}
+.input-grid input:focus {
+    border-color: #1a73e8;
+    outline: none;
+}
+.input-grid input::placeholder {
+    color: #6b7280;
+}
+.add-btn {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+.add-btn:hover {
+    background-color: #1557b0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+}
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+th {
+    background-color: #f3f4f6;
+    color: #374151;
+    font-weight: 600;
+}
+tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+tr:hover {
+    background-color: #f1f5f9;
+}
+.remove-btn {
+    padding: 6px 12px;
+    background-color: #dc2626;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+.remove-btn:hover {
+    background-color: #b91c1c;
+}
+#resultado {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e6f0ff;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    color: #1a73e8;
+    font-weight: 500;
+    line-height: 1.5;
+}
+@media (max-width: 600px) {
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+    .add-btn {
+        grid-column: span 1;
+    }
+}
