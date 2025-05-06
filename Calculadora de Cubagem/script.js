@@ -4,7 +4,7 @@ const caixas = [
     { nome: 'G', dimensoes: [66, 53, 38], volume: 66 * 53 * 38 }
 ];
 
-const fatorCubagem = 333.33; // kg/m³ (transporte rodoviário)
+const fatorCubagem = 300; // kg/m³ (transporte rodoviário)
 let itens = [];
 
 function cabeNaCaixa(itemDimensoes, caixaDimensoes) {
